@@ -2,6 +2,7 @@
 
 import time
 import dbmanager
+import huesensors
 from bme280 import BME280
 from datetime import datetime
 
@@ -43,12 +44,13 @@ def get_compensated_temperature(factor: float):
     return comp_temp
 
 def read_all_sensors(factor: float):
-    for i in range(3):
-        temperature = get_compensated_temperature(factor)
+    bathroom_temp, closet_temp, staircase_temp = huesensors.get_hue_sensor_readings()
+    for _ in range(3):
+        livingroom_temp = get_compensated_temperature(factor)
         humidity = bme280.get_humidity()
         pressure = bme280.get_pressure()
         time.sleep(0.1)
-    return(temperature, humidity, pressure, datetime.now())
+    return(livingroom_temp, bathroom_temp, closet_temp, staircase_temp, humidity, pressure, datetime.now())
 
 
 db_file = 'enviro.db'

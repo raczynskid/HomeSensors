@@ -25,7 +25,7 @@ def serve_layout():
     
     return html.Div([
     html.Div(children='Weather station operation'),
-    dcc.Graph(figure=px.line(ytd, x='recordDate', y='temperature', title="Temperature in C")),
+    dcc.Graph(figure=px.line(ytd, x='recordDate', y='living_room_temp', title="Living Room temp in C")),
     dcc.Graph(figure=px.line(ytd, x='recordDate', y='humidity', title="Humidity %")),
     dcc.Graph(figure=px.line(ytd, x='recordDate', y='pressure', title="Pressure in hPa")),
     dash_table.DataTable(data=df.to_dict('records'), page_size=10)

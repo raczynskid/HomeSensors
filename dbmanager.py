@@ -7,8 +7,8 @@ def create_connection(db_file):
     return conn
     
 def create_record(conn, record):
-    sql = ''' INSERT INTO weather(temperature,humidity,pressure,recordDate)
-				VALUES(?,?,?,?) '''
+    sql = ''' INSERT INTO weather(living_room_temp,bathroom_temp,closet_temp,staircase_temp,humidity,pressure,recordDate)
+				VALUES(?,?,?,?,?,?,?) '''
     cur = conn.cursor()
     cur.execute(sql, record)
     conn.commit()
