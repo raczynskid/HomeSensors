@@ -1,2 +1,3 @@
 /.venv
 enviro.db
+/__pycache__
