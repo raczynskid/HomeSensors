@@ -53,11 +53,18 @@ def serve_layout():
 
     fig.update_coloraxes
 
-    return html.Div([
-    html.Div(children='Weather station operation'),
+    return html.Div(className='app', children=[
+    html.Div(className='cardContainer', children=[
+    html.Div(className='timer', 
+        children=datetime.datetime.now().strftime("%c")),
+    html.Div(className='temperatureCard',
+        children=str(int(round(df['living_room_temp'][0],0))) + '°C'),
+    html.Div(className='humidityCard',
+        children=str(int(round(df['humidity'][0],0))) + '%')]),
+    html.Div(className='graphContainer', children=[
     dcc.Graph(figure=px.line(temperatures, x='recordDate', y='value', title="Temperatures in C", color="variable")),
-    dcc.Graph(figure=fig),
-    dash_table.DataTable(data=df.to_dict('records'), page_size=10)
+    dcc.Graph(figure=fig)]),
+    #dash_table.DataTable(data=df.to_dict('records'), page_size=10)
 ])
 
 
@@ -65,4 +72,4 @@ app.layout = serve_layout
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='8080')
+    app.run(host='0.0.0.0', port='8080', debug=False)

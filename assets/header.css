@@ -1,0 +1,54 @@
+.app {
+    display: flex;
+    flex-direction: row;
+}
+
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.graphContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.timer {
+    width:200px;
+    height:100px;
+    text-align:center;
+    line-height:50px;
+    color: #41C9E2;
+    font-size:25px;
+    font-family:Helvetica;
+    background-color:#F7EEDD;
+    border: 5px solid #F7EEDD;
+    border-radius: 5px;
+}
+
+.temperatureCard {
+    width:200px;
+    height:200px;
+    text-align:center;
+    line-height:200px;
+    color:white;
+    font-size:50px;
+    font-family:Helvetica;
+    background-color:#008DDA;
+    border: 5px solid #008DDA;
+    border-radius: 5px;
+}
+
+.humidityCard {
+    width:200px;
+    height:200px;
+    text-align:center;
+    line-height:200px;
+    color:white;
+    font-size:50px;
+    font-family:Helvetica;
+    background-color:#41C9E2;
+    border: 5px solid #41C9E2;
+    border-radius: 5px;
+}
