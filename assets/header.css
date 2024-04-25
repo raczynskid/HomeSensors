@@ -19,11 +19,11 @@
     height:100px;
     text-align:center;
     line-height:50px;
-    color: #41C9E2;
+    color: #ffffff;
     font-size:25px;
     font-family:Helvetica;
-    background-color:#F7EEDD;
-    border: 5px solid #F7EEDD;
+    background-color:#310a4b;
+    border: 5px solid #310a4b;
     border-radius: 5px;
 }
 
@@ -35,8 +35,8 @@
     color:white;
     font-size:50px;
     font-family:Helvetica;
-    background-color:#008DDA;
-    border: 5px solid #008DDA;
+    background-color:#fb8b24;
+    border: 5px solid #fb8b24;
     border-radius: 5px;
 }
 
@@ -48,7 +48,23 @@
     color:white;
     font-size:50px;
     font-family:Helvetica;
-    background-color:#41C9E2;
-    border: 5px solid #41C9E2;
+    background-color:#357266;
+    border: 5px solid #357266;
+    border-radius: 5px;
+}
+
+.temperatureVarianceCard{
+    font-family:Helvetica;
+    color:white;
+    background-color:#634528;
+    border: 5px solid #634528;
+    border-radius: 5px;
+}
+
+.humidityVarianceCard{
+    color:white;
+    font-family:Helvetica;
+    background-color:#c1edcc;
+    border: 5px solid #c1edcc;
     border-radius: 5px;
 }
