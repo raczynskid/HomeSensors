@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pandas as pd
 import sqlite3
-import transformations as t
+from transformations import *
 
 # initialize app
 app = Dash(__name__)
@@ -20,45 +20,13 @@ def get_lastday(df: pd.DataFrame) -> pd.DataFrame:
     df["last_day"] = pd.to_datetime(df["recordDate"]).dt.date >= yesterday
     return df
 
-def get_current_temperature(df: pd.DataFrame) -> float:
-    return df['living_room_temp'][0]
-
-def get_current_humidity(df: pd.DataFrame) -> float:
-    return df['humidity'][0]
-
-def get_current_temperature_as_string(temp: float, rounding: int) -> str:
-    return str(round(temp, rounding)) + '°C'
-
-def get_current_humidity_as_string(humidity: float, rounding: int) -> str:
-    return str(round(humidity, rounding)) + '%'
-
-def get_rolling_record_average(df: pd.DataFrame) -> pd.Series:
-    # change to date type
-    df.recordDate = pd.to_datetime(df.recordDate)
-    # sort by date
-    df_time = df.set_index('recordDate').sort_index(ascending=True)
-    # return rolling window average
-    return df_time.rolling(window='30d').mean().loc[df_time.index.max()]
-
-def compare_temp_to_average(df) -> float:
-    return round(get_current_temperature(df) - get_rolling_record_average(df)["living_room_temp"], 2)
-
-def compare_humidity_to_average(df) -> float:
-    return round(get_current_humidity(df) - get_rolling_record_average(df)["humidity"], 2)
-
-def percentage_difference_as_string(current: float, average: float) -> str:
-    figure = (((current - average) / average) * 100)
-    descriptor = (" below " if figure <= 0 else " above ") + "30 day average"
-    return str(round(figure, 1)) + '%' + descriptor
-
-def average_at_day_intervals(df):
-    df["recordDate"] = pd.to_datetime(df["recordDate"]).dt.date
-    return df.groupby(df["recordDate"]).mean()
-
 def serve_layout():
     
     df = get_data()
-    temperatures, other = t.breakdown(t.dataframe_pivot(df))
+    temperatures, other = breakdown(dataframe_pivot(df))
+    weekly_means_temperature = get_interval_means(temperatures, "living_room_temp", "W")
+    weekly_means_humidity = get_interval_means(other, "humidity", "W")
+    weekly_means_pressure = get_interval_means(other, "pressure", "D")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
@@ -103,10 +71,10 @@ def serve_layout():
                          children=percentage_difference_as_string(current_humidity, get_rolling_record_average(df)["humidity"]))])
     
     graph_container = html.Div(className='graphContainer', children=[
-                      dcc.Graph(figure=px.line(temperatures, x='recordDate', y='value', title="Temperatures in C", color="variable")),
+                      dcc.Graph(figure=px.line(weekly_means_temperature, y='value', title="Temperatures in C")),
                       dcc.Graph(figure=fig)])
     
-    return html.Div(className='app', children=[card_container, graph_container])
+    return html.Div(className='app', children=[card_container, graph_container, dcc.Graph(figure=px.line(weekly_means_humidity, y='value')), dcc.Graph(figure=px.line(weekly_means_pressure, y='value'))])
     #dash_table.DataTable(data=df.to_dict('records'), page_size=10)
 
 
