@@ -11,13 +11,13 @@ def breakdown(df: pd.DataFrame) -> tuple:
     other = df[["recordDate","variable","value"]].loc[df["variable"].isin(["recordDate","pressure","humidity"])]
     return temperatures, other
 
-def get_interval_means(df: pd.DataFrame, location_var: str, freq: str) -> pd.DataFrame:
+def get_interval_means(df: pd.DataFrame, freq: str) -> pd.DataFrame:
     # location var is items after melt, rooms, temp/humidity etc
-    temp = df.loc[df["variable"] == location_var]
+    temp = dataframe_pivot(df)
+    temp.dropna(inplace=True)
     temp["recordDate"] = pd.to_datetime(temp["recordDate"])
     temp.set_index("recordDate", inplace=True)
-    return temp[["value"]].groupby(pd.Grouper(freq=freq)).mean()
-
+    return temp.groupby(['variable', pd.Grouper(freq=freq)]).mean()
 
 def get_current_temperature(df: pd.DataFrame) -> float:
     return df['living_room_temp'][0]
