@@ -24,26 +24,27 @@ def serve_layout():
     
     df = get_data()
     temperatures, other = breakdown(dataframe_pivot(df))
-    weekly_means_temperature = get_interval_means(temperatures, "living_room_temp", "W")
-    weekly_means_humidity = get_interval_means(other, "humidity", "W")
-    weekly_means_pressure = get_interval_means(other, "pressure", "D")
+    other = other.loc[other['recordDate'] >= (datetime.date.today()- datetime.timedelta(weeks=4)).strftime("%Y-%m-01") ]
+    weekly_means = get_interval_means(df, 'w').reset_index()
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
 
     # Add traces
+    weekly_means_humidity = weekly_means.loc[weekly_means["variable"] == "humidity"]
+    weekly_means_pressure = weekly_means.loc[weekly_means["variable"] == "pressure"]
     fig.add_trace(
-        go.Scatter(x=other["recordDate"], y=other["value"].loc[other["variable"] == "humidity"], name="humidity in %"),
+        go.Scatter(x=weekly_means_humidity["recordDate"], y=weekly_means_humidity['value'], name="humidity in %"),
         secondary_y=False,
     )
 
     fig.add_trace(
-        go.Scatter(x=other["recordDate"], y=other["value"].loc[other["variable"] == "pressure"], name="pressure in hPa"),
+        go.Scatter(x=weekly_means_pressure["recordDate"], y=weekly_means_pressure['value'], name="pressure in hPa"),
         secondary_y=True,
     )
 
     # Add figure title
     fig.update_layout(
-        title_text="Pressure and Humidity"
+        title_text="Pressure and Humidity", template='simple_white'
     )
 
     # Set x-axis title
@@ -58,9 +59,12 @@ def serve_layout():
     current_temp = get_current_temperature(df)
     current_humidity = get_current_humidity(df)
 
+    temperature_fig=px.line(data_frame=weekly_means.loc[weekly_means["variable"] == "living_room_temp"], x='recordDate', y='value', title="Temperatures in C", template='simple_white')
+    temperature_fig.update_traces(textposition='top center', line_color='#ff9aa2')
+
     card_container = html.Div(className='cardContainer', children=[
                      html.Div(className='timer', 
-                         children=datetime.datetime.now().strftime("%c")),
+                         children=datetime.datetime.now().strftime("%x")),
                      html.Div(className='temperatureCard',
                          children=get_current_temperature_as_string(current_temp, 1)),
                     html.Div(className='temperatureVarianceCard',
@@ -71,11 +75,10 @@ def serve_layout():
                          children=percentage_difference_as_string(current_humidity, get_rolling_record_average(df)["humidity"]))])
     
     graph_container = html.Div(className='graphContainer', children=[
-                      dcc.Graph(figure=px.line(weekly_means_temperature, y='value', title="Temperatures in C")),
+                      dcc.Graph(figure=temperature_fig),
                       dcc.Graph(figure=fig)])
     
-    return html.Div(className='app', children=[card_container, graph_container, dcc.Graph(figure=px.line(weekly_means_humidity, y='value')), dcc.Graph(figure=px.line(weekly_means_pressure, y='value'))])
-    #dash_table.DataTable(data=df.to_dict('records'), page_size=10)
+    return html.Div(className='app', children=[card_container, graph_container])
 
 
 app.layout = serve_layout
