@@ -1,70 +1,70 @@
-.app {
-    display: flex;
-    flex-direction: row;
+/* Smart Home Temperature Monitoring Dashboard */
+
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
 }
 
+/* Card container */
 .cardContainer {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Graph container */
 .graphContainer {
+    width: 100%;
+    align-items: center;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: flex;
-    flex-direction: row;
 }
 
-
+/* Timer display */
 .timer {
-    width:200px;
-    height:100px;
-    text-align:center;
-    line-height:50px;
-    color: #ffffff;
-    font-size:25px;
-    font-family:Helvetica;
-    background-color:#310a4b;
-    border: 5px solid #310a4b;
-    border-radius: 5px;
+    font-size: 1.5rem;
+    color: #333;
 }
 
+/* Temperature card */
 .temperatureCard {
-    width:200px;
-    height:200px;
-    text-align:center;
-    line-height:200px;
-    color:white;
-    font-size:50px;
-    font-family:Helvetica;
-    background-color:#fb8b24;
-    border: 5px solid #fb8b24;
-    border-radius: 5px;
+    background-color: #fde9e9;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Humidity card */
 .humidityCard {
-    width:200px;
-    height:200px;
-    text-align:center;
-    line-height:200px;
-    color:white;
-    font-size:50px;
-    font-family:Helvetica;
-    background-color:#357266;
-    border: 5px solid #357266;
-    border-radius: 5px;
+    background-color: #e9f7fd;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.temperatureVarianceCard{
-    font-family:Helvetica;
-    color:white;
-    background-color:#634528;
-    border: 5px solid #634528;
-    border-radius: 5px;
+/* Temperature variance card */
+.temperatureVarianceCard {
+    background-color: #fff3d6;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.humidityVarianceCard{
-    color:white;
-    font-family:Helvetica;
-    background-color:#c1edcc;
-    border: 5px solid #c1edcc;
-    border-radius: 5px;
+/* Humidity variance card */
+.humidityVarianceCard {
+    background-color: #e6f7e9;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
